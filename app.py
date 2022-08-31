@@ -32,6 +32,7 @@ HEADER = {
 @app.route("/", methods=['POST', 'GET'])
 def index():
     if request.method == 'GET':
+        print('OK')
         return 'ok'
     body = request.json
     events = body["events"]
@@ -138,6 +139,7 @@ def index():
 
 @app.route("/callback", methods=['POST'])
 def callback():
+    print('callback')
     signature = request.headers['X-Line-Signature']
     body = request.get_data(as_text=True)
     app.logger.info("Request body: " + body)
@@ -225,26 +227,29 @@ def getImageMessage(originalContentUrl):
 
 
 def replyMessage(payload):
-    r = requests.post('https://api.line.me/v2/bot/message/reply', data=json.dumps(payload), headers=headers)
+    r = requests.post('https://api.line.me/v2/bot/message/reply', data=json.dumps(payload), headers=HEADER)
     print(r.content)
     return 'OK'
 
 
 def pushMessage(payload):
-    r = requests.post('https://api.line.me/v2/bot/message/push', data=json.dumps(payload), headers=headers)
+    r = requests.post('https://api.line.me/v2/bot/message/push', data=json.dumps(payload), headers=HEADER)
     print(r.content)
     return 'OK'
 
 
 def getTotalSentMessageCount():
-    response = {}
+    r = requests.get('https://api.line.me/v2/bot/message/quota/consumption', headers=HEADER)
+    print(r.json())
     return 0
 
 
 def getTodayCovid19Message():
-    date = ""
-    total_count = 0
-    count = 0
+    r = requests.get('https://covid-19.nchc.org.tw/api/covid19?CK=covid-19@nchc.org.tw&querydata=3001&limited=BGD', headers=HEADER)
+    data = r.json()[0]
+    date = data['a04']
+    total_count = data['a05']
+    count = data['a06']
     return F"日期：{date}, 人數：{count}, 確診總人數：{total_count}"
 
 
