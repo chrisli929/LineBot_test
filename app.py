@@ -170,7 +170,7 @@ def sendTextMessageToMe():
 def getNameEmojiMessage():
     lookUpStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
     productId = "5ac21a8c040ab15980c9b43f"
-    name = "Chris"
+    name = "Miles"
     message = dict()
     message["type"] = "text"
     message["text"] = "".join("$" for r in range(len(name)))
@@ -211,12 +211,22 @@ def getPlayStickerMessage():
 
 
 def getTaipei101LocationMessage():
-    message = dict()
+    message = {
+      "type": "location",
+      "title": "台北101",
+      "address": "110台北市信義區市府路45號",
+      "latitude": 25.034127,
+      "longitude": 121.5618272
+    }
     return message
 
 
 def getMRTVideoMessage():
-    message = dict()
+    message = {
+      "type": "video",
+      "originalContentUrl": F"{end_point}/static/taipei_101_video.mp4",
+      "previewImageUrl": F"{end_point}/static/taipei_101.jpeg"
+    }
     return message
 
 
@@ -237,7 +247,12 @@ def getTaipei101ImageMessage(originalContentUrl=F"{end_point}/static/taipei_101.
 
 
 def getImageMessage(originalContentUrl):
-    message = dict()
+    message = {
+      "type": "image",
+      "originalContentUrl": originalContentUrl,
+      "previewImageUrl": originalContentUrl
+    }
+
     return message
 
 
